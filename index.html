@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Ding">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
-    <title>Ding — Install</title>
+    <title>Ding</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -20,227 +20,133 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 32px 24px;
-            gap: 36px;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .hero {
-            text-align: center;
+            padding: 40px 24px;
+            gap: 32px;
         }
         .icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 26px;
+            width: 90px; height: 90px;
+            border-radius: 22px;
             background: #1a8a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 52px;
-            margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 48px;
             box-shadow: 0 0 40px rgba(28,160,28,0.4);
         }
-        h1 {
-            font-size: 30px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
-        .sub {
-            color: rgba(255,255,255,0.45);
-            font-size: 15px;
-        }
-        .install-btn {
+        h1 { font-size: 28px; font-weight: 700; }
+        .sub { color: rgba(255,255,255,0.4); font-size: 14px; }
+        /* big green button */
+        .btn {
             display: block;
-            width: 100%;
-            max-width: 320px;
-            background: #1a8a1a;
-            color: #fff;
+            width: 100%; max-width: 320px;
+            padding: 17px 20px;
+            border-radius: 14px;
+            font-size: 17px; font-weight: 600;
+            text-align: center;
             text-decoration: none;
-            padding: 18px 24px;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
-            box-shadow: 0 4px 24px rgba(28,160,28,0.35);
             cursor: pointer;
         }
-        .install-btn:active {
-            background: #22b022;
+        .btn-primary { background: #1a8a1a; color: #fff; }
+        .btn-secondary {
+            background: rgba(255,255,255,0.07);
+            color: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.12);
         }
-        .steps {
-            width: 100%;
-            max-width: 320px;
-        }
+        /* steps */
+        .steps-block { width: 100%; max-width: 320px; }
         .steps-title {
-            color: rgba(255,255,255,0.4);
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1px;
+            color: rgba(255,255,255,0.35);
+            font-size: 11px; font-weight: 600; letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
-        .step {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            margin-bottom: 16px;
-        }
-        .step-num {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
+        .step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+        .num {
+            width: 24px; height: 24px; border-radius: 50%;
             background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 600;
-            flex-shrink: 0;
-            margin-top: 1px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px;
         }
-        .step-text {
-            font-size: 15px;
-            line-height: 1.5;
-            color: rgba(255,255,255,0.75);
+        .txt { font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.7); }
+        .txt strong { color: #fff; }
+        hr { border: none; border-top: 1px solid rgba(255,255,255,0.07); width: 100%; max-width: 320px; }
+        /* test button */
+        .test-area { text-align: center; }
+        .test-label { color: rgba(255,255,255,0.25); font-size: 12px; margin-bottom: 12px; }
+        #testBtn {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: rgba(26,138,26,0.25);
+            border: 2px solid rgba(26,138,26,0.5);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; cursor: pointer; margin: 0 auto;
+            transition: transform .07s, background .07s;
         }
-        .step-text strong {
-            color: #fff;
-        }
-        .divider {
-            width: 100%;
-            max-width: 320px;
-            border: none;
-            border-top: 1px solid rgba(255,255,255,0.08);
-        }
-        .test-area {
-            text-align: center;
-        }
-        .test-label {
-            color: rgba(255,255,255,0.3);
-            font-size: 12px;
-            margin-bottom: 14px;
-        }
-        .test-btn {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: rgba(26,138,26,0.3);
-            border: 2px solid rgba(26,138,26,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            cursor: pointer;
-            margin: 0 auto;
-            transition: transform 0.07s, background 0.07s;
-        }
-        .test-btn:active, .test-btn.pop {
-            transform: scale(0.9);
-            background: rgba(26,138,26,0.6);
-        }
-        .backtap-note {
-            color: rgba(255,255,255,0.25);
-            font-size: 12px;
-            text-align: center;
-            max-width: 300px;
-            line-height: 1.6;
-        }
-        .backtap-note a {
-            color: rgba(255,255,255,0.45);
-        }
+        #testBtn.pop { transform: scale(0.88); background: rgba(26,138,26,0.55); }
     </style>
 </head>
 <body>
 
-    <div class="hero">
+    <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;">
         <div class="icon">✓</div>
         <h1>Ding</h1>
-        <p class="sub">Tap once. Hear it.</p>
+        <p class="sub">Tap the home screen icon → instant sound.</p>
     </div>
 
-    <a class="install-btn"
-       href="shortcuts://import-shortcut/?url=https%3A%2F%2Fcolinpogue.github.io%2Fpay-ding%2Fding.shortcut&name=Ding">
+    <!-- Option 1: URL scheme (opens Shortcuts directly) -->
+    <a class="btn btn-primary"
+       href="shortcuts://import-shortcut/?url=https%3A%2F%2Fcolinpogue.github.io%2Fpay-ding%2Fding.shortcut&amp;name=Ding">
         📲 &nbsp;Install Shortcut
     </a>
 
-    <div class="steps">
-        <div class="steps-title">Setup — 4 quick taps</div>
-        <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-text">Tap <strong>Install Shortcut</strong> above — it opens the Shortcuts app</div>
-        </div>
-        <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-text">Tap <strong>Add Untrusted Shortcut</strong> (or "Add Shortcut")</div>
-        </div>
-        <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-text">In Shortcuts, tap <strong>•••</strong> on the Ding shortcut → <strong>Add to Home Screen</strong></div>
-        </div>
-        <div class="step">
-            <div class="step-num">4</div>
-            <div class="step-text">Tap <strong>Add</strong>. Done — the icon lives on your home screen.</div>
-        </div>
+    <!-- Steps for after install -->
+    <div class="steps-block">
+        <div class="steps-title">After tapping above</div>
+        <div class="step"><div class="num">1</div><div class="txt">Shortcuts app opens — tap <strong>Add Shortcut</strong></div></div>
+        <div class="step"><div class="num">2</div><div class="txt">Find "Ding" in your shortcuts list → tap <strong>•••</strong></div></div>
+        <div class="step"><div class="num">3</div><div class="txt">Tap the <strong>share icon</strong> → <strong>Add to Home Screen</strong> → <strong>Add</strong></div></div>
     </div>
 
-    <hr class="divider">
+    <hr>
+
+    <!-- Option 2: if URL scheme fails -->
+    <div class="steps-block">
+        <div class="steps-title">If that button fails — do it manually (2 min)</div>
+        <div class="step"><div class="num">1</div><div class="txt">Open <strong>Shortcuts</strong> app → tap <strong>+</strong></div></div>
+        <div class="step"><div class="num">2</div><div class="txt">Tap <strong>Add Action</strong> → search <strong>"Get Contents of URL"</strong> → select it → paste this URL:<br><span style="font-size:12px;color:rgba(255,255,255,0.5);word-break:break-all;">https://colinpogue.github.io/pay-ding/ding.wav</span></div></div>
+        <div class="step"><div class="num">3</div><div class="txt">Tap <strong>+</strong> → search <strong>"Play Sound"</strong> → select it</div></div>
+        <div class="step"><div class="num">4</div><div class="txt">Tap <strong>Done</strong> → rename to <strong>Ding</strong> → tap <strong>Done</strong> again</div></div>
+        <div class="step"><div class="num">5</div><div class="txt">On the shortcut, tap <strong>•••</strong> → share icon → <strong>Add to Home Screen</strong> → <strong>Add</strong></div></div>
+    </div>
+
+    <hr>
 
     <div class="test-area">
-        <div class="test-label">test the sound first</div>
-        <div class="test-btn" id="testBtn">🔊</div>
+        <div class="test-label">preview the sound</div>
+        <div id="testBtn">🔊</div>
     </div>
 
-    <p class="backtap-note">
-        Bonus: skip the icon entirely — go to
-        <strong style="color:rgba(255,255,255,0.4)">Settings → Accessibility → Touch → Back Tap → Double Tap</strong>
-        and select the Ding shortcut. Double-tap the back of your phone = instant ding.
-    </p>
-
     <script>
-        let ctx = null;
-        let lastTap = 0;
-
-        function getCtx() {
-            if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-            return ctx;
-        }
-
-        function playTone(freq, when, dur, pk) {
-            const ac = getCtx();
-            const o = ac.createOscillator();
-            const g = ac.createGain();
+        let ctx = null, last = 0;
+        function gc() { if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)(); return ctx; }
+        function tone(f, t, d, p) {
+            const ac = gc(), o = ac.createOscillator(), g = ac.createGain();
             o.connect(g); g.connect(ac.destination);
-            o.frequency.value = freq;
-            g.gain.setValueAtTime(0.0001, when);
-            g.gain.exponentialRampToValueAtTime(pk, when + 0.006);
-            g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
-            o.start(when); o.stop(when + dur + 0.05);
+            o.frequency.value = f;
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.exponentialRampToValueAtTime(p, t + 0.006);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+            o.start(t); o.stop(t + d + .05);
         }
-
         function ding() {
-            const now = Date.now();
-            if (now - lastTap < 350) return;
-            lastTap = now;
-
-            const btn = document.getElementById('testBtn');
-            btn.classList.add('pop');
-            setTimeout(() => btn.classList.remove('pop'), 160);
-
-            const ac = getCtx();
-            if (ac.state === 'suspended') ac.resume();
+            if (Date.now() - last < 350) return; last = Date.now();
+            const b = document.getElementById('testBtn');
+            b.classList.add('pop'); setTimeout(() => b.classList.remove('pop'), 160);
+            const ac = gc(); if (ac.state === 'suspended') ac.resume();
             const t = ac.currentTime;
-
-            playTone(1046.5, t, 0.38, 0.50);
-            playTone(2093.0, t, 0.25, 0.18);
-            playTone(3139.5, t, 0.15, 0.06);
-            playTone(1318.5, t + 0.13, 0.46, 0.50);
-            playTone(2637.0, t + 0.13, 0.30, 0.18);
-            playTone(3956.0, t + 0.13, 0.18, 0.06);
+            tone(1046.5, t, .38, .5); tone(2093, t, .25, .18); tone(3139.5, t, .15, .06);
+            tone(1318.5, t+.13, .46, .5); tone(2637, t+.13, .3, .18); tone(3956, t+.13, .18, .06);
         }
-
-        const btn = document.getElementById('testBtn');
-        btn.addEventListener('touchstart', function(e) { e.preventDefault(); ding(); }, { passive: false });
-        btn.addEventListener('click', ding);
+        const b = document.getElementById('testBtn');
+        b.addEventListener('touchstart', e => { e.preventDefault(); ding(); }, { passive: false });
+        b.addEventListener('click', ding);
     </script>
 </body>
 </html>
