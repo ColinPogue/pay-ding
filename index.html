@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Ding">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <title>Ding</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%; height: 100%;
+            background: #000;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        #tap {
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            cursor: pointer;
+        }
+        .ring {
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: #1a8a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.07s ease, background 0.07s;
+            box-shadow: 0 0 50px rgba(30,160,30,0.35);
+        }
+        .ring.pop {
+            transform: scale(0.91);
+            background: #22b022;
+        }
+        .check {
+            color: #fff;
+            font-size: 88px;
+            font-weight: 300;
+            line-height: 1;
+            margin-top: -6px;
+        }
+        .hint {
+            color: rgba(255,255,255,0.35);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: lowercase;
+        }
+    </style>
+</head>
+<body>
+    <div id="tap">
+        <div class="ring" id="ring">
+            <span class="check">✓</span>
+        </div>
+        <span class="hint">tap to ding</span>
+    </div>
+
+    <script>
+        let ctx = null;
+        let last = 0;
+
+        function getCtx() {
+            if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+            return ctx;
+        }
+
+        function tone(ac, freq, when, dur, peak) {
+            const osc = ac.createOscillator();
+            const g = ac.createGain();
+            osc.connect(g);
+            g.connect(ac.destination);
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            g.gain.setValueAtTime(0.0001, when);
+            g.gain.exponentialRampToValueAtTime(peak, when + 0.006);
+            g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
+            osc.start(when);
+            osc.stop(when + dur + 0.05);
+        }
+
+        function ding() {
+            const now = Date.now();
+            if (now - last < 350) return;
+            last = now;
+
+            const ring = document.getElementById('ring');
+            ring.classList.add('pop');
+            setTimeout(() => ring.classList.remove('pop'), 180);
+
+            const ac = getCtx();
+            if (ac.state === 'suspended') ac.resume();
+            const t = ac.currentTime;
+
+            // First ding: C6 + harmonics
+            tone(ac, 1046.5, t,        0.38, 0.50);
+            tone(ac, 2093.0, t,        0.28, 0.18);
+            tone(ac, 3139.5, t,        0.18, 0.07);
+
+            // Second ding: E6 + harmonics (130ms later)
+            tone(ac, 1318.5, t + 0.13, 0.46, 0.50);
+            tone(ac, 2637.0, t + 0.13, 0.32, 0.18);
+            tone(ac, 3956.0, t + 0.13, 0.20, 0.07);
+        }
+
+        const el = document.getElementById('tap');
+        el.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            ding();
+        }, { passive: false });
+        el.addEventListener('click', ding);
+    </script>
+</body>
+</html>
